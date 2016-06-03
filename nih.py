@@ -38,16 +38,13 @@ for d in diri:
 	for name in file.namelist():
 		file_name = name
 		
-	# while True:
-	print "************************************************************************************************************************"
+	print "************************"
 	print 'I am reading file:' , d 
-	doc = file.open(file_name).read().split('<row>')
-
+	
 	# Opening the zip file 
 	# Note: The file is too big. Read it in chunks and split it by tag = <row>	
-	# doc = open(path+'/RePORTER_PRJABS_X_FY2001.xml').read(64*1820).split('<row>')
-	# doc = file.open(file_name).read(64*1820).split('<row>')
-	
+	doc = file.open(file_name).read().split('<row>')
+
 	for d in doc :
 		#Parsing the XML file with BeautifulSoup
 		soup = BeautifulSoup(d)
