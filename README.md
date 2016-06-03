@@ -1,2 +1,1 @@
-# Scraping-XML-files-
-Scrapping XML files with BeautifulSoup 
+# Scraping-XML-Files-with BeautifulSoup 
