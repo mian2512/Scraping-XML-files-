@@ -38,45 +38,47 @@ for d in diri:
 	for name in file.namelist():
 		file_name = name
 		
-	while True:
-		doc = file.open(file_name).read(64*1820).split('<row>')
+	# while True:
+	print "************************************************************************************************************************"
+	print 'I am reading file:' , d 
+	doc = file.open(file_name).read().split('<row>')
+
+	# Opening the zip file 
+	# Note: The file is too big. Read it in chunks and split it by tag = <row>	
+	# doc = open(path+'/RePORTER_PRJABS_X_FY2001.xml').read(64*1820).split('<row>')
+	# doc = file.open(file_name).read(64*1820).split('<row>')
 	
-		# Opening the zip file 
-		# Note: The file is too big. Read it in chunks and split it by tag = <row>	
-		# doc = open(path+'/RePORTER_PRJABS_X_FY2001.xml').read(64*1820).split('<row>')
-		# doc = file.open(file_name).read(64*1820).split('<row>')
+	for d in doc :
+		#Parsing the XML file with BeautifulSoup
+		soup = BeautifulSoup(d)
 		
-		for d in doc :
-			#Parsing the XML file with BeautifulSoup
-			soup = BeautifulSoup(d)
-			
-			#Store application_id & abstract_text
-			application = soup('application_id')
-			abs_text = soup('abstract_text' )
-			
-			#Cleaning application_id and abstract_text to remove the tags 
-			app_id = ''
-			app_text = ''
-			for r in application:
-				print "****"
-				app_id =  r.text
-			for t in abs_text:
-				app_text = t.text
-			#Removing tab spaces 
-			app_text = re.sub(r'[\s+]', ' ', app_text)
-			
-			#Join application_id and abstract_text and write the data to outp
-			row = [app_id , app_text]
-			print "*********"
-			print row 
-			outp.writerow(row)
-			
+		#Store application_id & abstract_text
+		application = soup('application_id')
+		abs_text = soup('abstract_text' )
 		
-		#When we finish reading the file, exit 
-		if not doc:
-			print "No more file to read"
-			exit()
+		#Cleaning application_id and abstract_text to remove the tags 
+		app_id = ''
+		app_text = ''
+		for r in application:
+			print "****"
+			app_id =  r.text
+		for t in abs_text:
+			app_text = t.text
+		#Removing tab spaces 
+		app_text = re.sub(r'[\s+]', ' ', app_text)
 		
+		#Join application_id and abstract_text and write the data to outp
+		row = [app_id , app_text]
+		print "*********"
+		print row 
+		outp.writerow(row)
+		
+	
+	#When we finish reading the file, exit 
+	if not doc:
+		print "No more file to read"
+		exit()
+	
 print "****** The End **********"
 	
 	
