@@ -12,24 +12,29 @@ import os.path, sys
 sys.path.append('C:/Anaconda2/Lib/site-packages/')
 
 
-#packages need to run the program 
+#Necessary packages for running this script  
 import urllib, urllib2 , pprint , zipfile , re, csv , os
 from BeautifulSoup import *
 
-#Define the path where the original XML data is saved 
+#Path to the original XML data (modify this to where you saved the data)
 path = "C:\Users\psirma\Desktop\Zipfile\original_data".replace("\\" , "/")  
+#Path to where dtat will be saved (modify this to where you want to save the data)
 path2 = "C:\Users\psirma\Desktop\Zipfile".replace("\\" , "/")  
 
+#Creating a list with all the file names in path 
 diri = os.listdir(path)
 
-for d in diri:
+#Loop through files in diri above 
+for d in diri:  
+
 	
+	#Opening the zipped file using zipfile function 
 	file = zipfile.ZipFile(path + "/" +d, "r")   #loading the Zipfile
 	
 	#Opening a csv file to write the final output 
 	outp = csv.writer(open(path2+'/_' + d + '.csv', 'wb'))
 	
-	#writting column titles 
+	#writting file title 
 	titles = ['Application_id' , 'Abstract']
 	outp.writerow(titles)
 	
@@ -42,9 +47,10 @@ for d in diri:
 	print 'I am reading file:' , d 
 	
 	# Opening the zip file 
-	# Note: The file is too big. Read it in chunks and split it by tag = <row>	
+	# Note: The file is too big, split it by tag = <row>	
 	doc = file.open(file_name).read().split('<row>')
 
+	#Looping through a lis of doc above 
 	for d in doc :
 		#Parsing the XML file with BeautifulSoup
 		soup = BeautifulSoup(d)
@@ -60,7 +66,7 @@ for d in diri:
 			print "****"
 			app_id =  r.text
 		for t in abs_text:
-			app_text = t.text
+			app_text = t.text.encode('utf8')
 		#Removing tab spaces 
 		app_text = re.sub(r'[\s+]', ' ', app_text)
 		
